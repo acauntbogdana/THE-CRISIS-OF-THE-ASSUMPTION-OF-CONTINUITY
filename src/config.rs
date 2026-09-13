@@ -25,26 +25,6 @@ pub const STSRV_PARAMS: StsrvParams = StsrvParams {
     n_blocks: 390,
 };
 
-/// Список макропеременных (ffill-версии), которые реально используются в панельной
-/// регрессии (Уровень IV). Явно вынесен сюда, чтобы:
-///   1) не приходилось трогать analysis_core.rs при изменении набора признаков;
-///   2) явно контролировать линейно зависимые/почти дублирующие колонки.
-///
-/// ВАЖНО про исключённые колонки (см. схему macro_indicators_2018_2022.parquet):
-///   - yield_curve_10y_2y_ffill = treasury_10y_ffill - treasury_2y_ffill        (точная ЛК)
-///   - yield_curve_10y_3m_ffill = treasury_10y_ffill - treasury_3m_ffill        (точная ЛК)
-///   - baa_10y_spread_ffill     = moodys_baa_yield_ffill - treasury_10y_ffill   (точная ЛК)
-///   - aaa_10y_spread_ffill     = moodys_aaa_yield_ffill - treasury_10y_ffill   (точная ЛК)
-///   - default_spread_baa_aaa_ffill = moodys_baa_yield_ffill - moodys_aaa_yield_ffill (точная ЛК)
-///   - real_rate_10y_calc_ffill ~ дублирует real_rate_10y_tips_ffill (почти точная ЛК)
-///   - vix_yf_ffill ~ дублирует vix_fred_ffill (ρ > 0.95)
-///   - dxy_yf_ffill ~ дублирует dollar_index_broad_ffill (ρ > 0.95)
-///   - oil_brent_ffill ~ дублирует oil_wti_ffill (ρ > 0.9)
-///
-/// Решение: из каждой такой "семьи" оставляем ОДНУ переменную. Вместо уровней
-/// treasury_10y/treasury_2y/treasury_3m/moodys_baa/moodys_aaa берём только спреды
-/// (они несут больше независимой информации для логит-модели скачков), кроме
-/// treasury_10y_ffill — его оставляем как самостоятельный уровень ставки.
 pub const SELECTED_MACRO_COLS: &[&str] = &[
     "vix_fred_ffill",
     "ted_spread_ffill",
