@@ -46,7 +46,6 @@ pub const SELECTED_MACRO_COLS: &[&str] = &[
     "copper_ffill",
     "m2_money_supply_ffill",
     "gdp_real_ffill",
-    // спреды вместо уровней (см. комментарий выше):
     "default_spread_baa_aaa_ffill",
     "yield_curve_10y_2y_ffill",
     "real_rate_10y_tips_ffill",
