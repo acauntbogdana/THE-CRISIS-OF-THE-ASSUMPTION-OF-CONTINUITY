@@ -9,7 +9,6 @@
 - Parquet-данные: IEX DEEP, SEC Fundamental, макро, справочник тикеров
 
 ## Сборка и запуск
----
+```bash
 cargo build --release
 cargo run --release
----
