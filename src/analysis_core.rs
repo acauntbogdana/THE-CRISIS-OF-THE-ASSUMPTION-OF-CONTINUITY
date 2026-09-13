@@ -156,7 +156,7 @@ pub fn run() -> Result<()> {
     let n_features = panel_feature_names.len();
 
     let panel_path = format!("{}/panel_data.csv", OUTPUT_DIR);
-    /*
+    
     let panel_file = OpenOptions::new()
         .create(true)
         .write(true)
@@ -171,7 +171,7 @@ pub fn run() -> Result<()> {
         header.push("y".to_string());
         panel_writer.write_record(&header)?;
     }
-    */
+    
     let mut panel_rows_written: u64 = 0;
     let mut panel_rows_skipped: u64 = 0;
 
@@ -361,7 +361,7 @@ pub fn run() -> Result<()> {
                     record.push(v.to_string());
                 }
                 record.push(y_val.to_string());
-                //panel_writer.write_record(&record)?; закомментировано
+                panel_writer.write_record(&record)?; 
                 panel_rows_written += 1;
             } else {
                 if panel_rows_skipped < 3 {
@@ -382,7 +382,7 @@ pub fn run() -> Result<()> {
         }
 
         if (ticker_idx + 1) % 100 == 0 {
-            //panel_writer.flush()?; закомментировано
+            panel_writer.flush()?; 
             println!(
                 "Обработано тикеров: {}/{}, строк панели записано: {}",
                 ticker_idx + 1,
@@ -391,8 +391,8 @@ pub fn run() -> Result<()> {
             );
         }
     }
-   // panel_writer.flush()?; закомментировано
-  //  drop(panel_writer);
+    panel_writer.flush()?; закомментировано
+    drop(panel_writer);
     println!(
         "Панель сформирована на диске: {} строк -> {}",
         panel_rows_written, panel_path
@@ -467,10 +467,7 @@ pub fn run() -> Result<()> {
     writeln!(report, "Всего внутридневных скачков: {}", total_jumps)?;
     writeln!(report, "Экономически значимых (Φ>1): {}", economic_significant_jumps)?;
 
-
-
-
-            // Шаг 6: Логистическая регрессия (Уровень IV)
+    // Шаг 6: Логистическая регрессия (Уровень IV)
     println!("Шаг 6: Чтение панели с диска ({})...", panel_path);
     let (x_arr, y_arr, paper_ids, date_ids, names) =
         read_panel_csv(&panel_path, &panel_feature_names)?;
